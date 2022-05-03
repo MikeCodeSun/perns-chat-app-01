@@ -1,0 +1,39 @@
+$dark: #fff;
+$paragraph-margin-bottom: 0;
+
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  background: linear-gradient(
+    203deg,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(253, 187, 45, 1) 50%,
+    rgba(252, 70, 107, 1) 100%
+  );
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+.user-div {
+  cursor: pointer;
+}
+
+.user-div {
+  height: 80px;
+}
+.user-div:hover {
+  background-color: lightgray;
+}
+
+.chat-messages {
+  height: 500px;
+  overflow-y: scroll;
+
+  scrollbar-width: none;
+}
+.chat-messages::-webkit-scrollbar {
+  display: none;
+}

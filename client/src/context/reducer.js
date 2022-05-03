@@ -1,0 +1,50 @@
+const reducer = (state, action) => {
+  let msgUsers;
+  switch (action.type) {
+    // log in user
+    case "LOGIN":
+      localStorage.setItem("token", action.payload.token);
+      return { ...state, user: action.payload };
+    // log out user
+    case "LOGOUT":
+      localStorage.removeItem("token");
+      window.location.reload();
+      return { ...state, user: null };
+    // set selected user
+    case "SET_SELECTED_USER":
+      msgUsers = state.users.map((user) => {
+        return { ...user, selected: user.name === action.payload };
+      });
+      // console.log(msgUsers);
+      return { ...state, users: msgUsers };
+    // set messages
+    case "SET_USER_MESSAGES":
+      msgUsers = state.users.map((user) => {
+        if (user.name === action.payload.to) {
+          return { ...user, messages: action.payload.messages };
+        }
+        return user;
+      });
+      // console.log(msgUsers);
+      return { ...state, users: msgUsers };
+    // set users
+    case "SET_USERS":
+      return { ...state, users: action.payload };
+    case "SEND_MESSAGE":
+      msgUsers = state.users.map((user) => {
+        if (user.name === action.payload.to) {
+          return {
+            ...user,
+            messages: [action.payload.message, ...user.messages],
+            lastMessage: action.payload.message,
+          };
+        }
+        return user;
+      });
+      return { ...state, users: msgUsers };
+    default:
+      throw new Error(`Error, unkown type`);
+  }
+};
+
+export default reducer;
