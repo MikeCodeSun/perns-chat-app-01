@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useGlobleContext } from "../context/context";
 import { SEND_MESSAGE } from "../graphql/gql";
@@ -20,7 +20,7 @@ export default function SendMessage({ selectedUser }) {
       console.log(err);
     },
     onCompleted(data) {
-      console.log(data);
+      // console.log(data);
       context.sendMessage(selectedUser.name, data.sendMessage);
       setContent("");
     },
@@ -45,12 +45,13 @@ export default function SendMessage({ selectedUser }) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-
-          <RiSendPlaneFill
-            role="button"
-            className="fs-2 text-primary"
-            type="submit"
-          />
+          <Button type="submit" className="bg-transparent border-0">
+            <RiSendPlaneFill
+              role="button"
+              type="submit"
+              className="fs-2 text-primary"
+            />
+          </Button>
         </Form.Group>
       </Form>
     </div>

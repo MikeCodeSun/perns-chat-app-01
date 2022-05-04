@@ -2,6 +2,8 @@ const { UserInputError } = require("apollo-server");
 const { Message, User } = require("../../models/index");
 const auth = require("../../utils/auth");
 const { Op } = require("sequelize");
+const { PubSub, withFilter } = require("graphql-subscriptions");
+const pubsub = new PubSub();
 
 module.exports = {
   Query: {},
@@ -37,6 +39,8 @@ module.exports = {
           to: toUser.name,
         });
 
+        pubsub.publish("NEW_MESSAGE", { newMessage: message });
+
         return message;
       } catch (error) {
         console.log(error);
@@ -71,6 +75,27 @@ module.exports = {
         console.log(error);
         throw new UserInputError("Error", { errors });
       }
+    },
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("NEW_MESSAGE"),
+        // a is payload have newMe
+        ({ newMessage }, b, context) => {
+          const user = auth(context);
+          console.log(newMessage.from);
+          console.log("b");
+          console.log(b);
+          console.log("user");
+          console.log(user);
+          if (user) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      ),
     },
   },
 };
