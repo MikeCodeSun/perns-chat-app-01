@@ -43,15 +43,14 @@ const startApolloServer = async (typeDefs, resolvers) => {
     {
       schema,
       onConnect: () => {
-        console.log("connect");
+        console.log("sub connect");
       },
+      //  return context(include token) to subscription resolvers
       context: (ctx) => {
-        // console.log("1.5");
-        // console.log({ ctx });
         return { ctx };
       },
       onDisconnect() {
-        console.log("Disconnected!");
+        console.log("sub Disconnected!");
       },
     },
     wsServer
@@ -64,8 +63,9 @@ const startApolloServer = async (typeDefs, resolvers) => {
     },
     // subscriptions: {
     //   onConnect: async (connectionParams, WebSocket) => {
-    //     console.log(connectionParams);
-    //     return connectionParams;
+    //     console.log({ connectionParams });
+    //     console.log({ WebSocket });
+    //     return { connectionParams, WebSocket };
     //   },
     // },
     plugins: [
@@ -83,14 +83,20 @@ const startApolloServer = async (typeDefs, resolvers) => {
   });
 
   // server start
+
   await server.start();
   server.applyMiddleware({
     app,
+    cors: true,
     http: "/",
   });
 
+  // server.installSubscriptionHandlers(httpServer);
+  // server.installSubscriptionHandlers(httpServer);
+
   await new Promise((resolve) => httpServer.listen({ port }, resolve));
   console.log(`server is on Port: ${port}`);
+  // httpServer.listen({ port }, () => console.log(`server is on Port: ${port}`));
   sequelize
     .authenticate()
     .then(() => console.log("db connected"))

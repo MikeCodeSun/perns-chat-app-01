@@ -1,9 +1,9 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useGlobleContext } from "../context/context";
-import { SEND_MESSAGE } from "../graphql/gql";
+import { NEW_MESSAGE, SEND_MESSAGE } from "../graphql/gql";
 
 export default function SendMessage({ selectedUser }) {
   const [content, setContent] = useState("");
@@ -21,8 +21,23 @@ export default function SendMessage({ selectedUser }) {
     },
     onCompleted(data) {
       // console.log(data);
-      context.sendMessage(selectedUser.name, data.sendMessage);
+      // context.sendMessage(selectedUser.name, data.sendMessage);
       setContent("");
+    },
+  });
+  // subscription
+  const { data, error, loading } = useSubscription(NEW_MESSAGE, {
+    onError(err) {
+      console.log(err);
+    },
+    onSubscriptionData(data) {
+      // console.log(data.subscriptionData.data.newMessage);
+      const username =
+        context.user.name === data.subscriptionData.data.newMessage.from
+          ? data.subscriptionData.data.newMessage.to
+          : data.subscriptionData.data.newMessage.from;
+      // console.log(username);
+      context.sendMessage(username, data.subscriptionData.data.newMessage);
     },
   });
 
@@ -30,6 +45,15 @@ export default function SendMessage({ selectedUser }) {
     e.preventDefault();
     sendMessage();
   };
+
+  // console.log(window.location.host);
+  // if (error) {
+  //   console.log({ error });
+  //   return <p>error ...</p>;
+  // }
+  // if (loading) return <p>loading ...</p>;
+
+  if (!loading && !error && data) console.log({ data });
 
   return (
     <div>

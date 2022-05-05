@@ -62,3 +62,15 @@ export const SEND_MESSAGE = gql`
     }
   }
 `;
+
+export const NEW_MESSAGE = gql`
+  subscription NewMessage {
+    newMessage {
+      uuid
+      content
+      from
+      to
+      createdAt
+    }
+  }
+`;

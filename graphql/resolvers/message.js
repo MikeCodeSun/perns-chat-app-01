@@ -81,15 +81,12 @@ module.exports = {
     newMessage: {
       subscribe: withFilter(
         () => pubsub.asyncIterator("NEW_MESSAGE"),
-        // a is payload have newMe
-        ({ newMessage }, b, context) => {
+        // a is payload have newMessage,
+        ({ newMessage }, _, context) => {
           const user = auth(context);
-          console.log(newMessage.from);
-          console.log("b");
-          console.log(b);
-          console.log("user");
-          console.log(user);
-          if (user) {
+
+          // console.log(newMessage);
+          if (newMessage.from === user.name || newMessage.to === user.name) {
             return true;
           } else {
             return false;

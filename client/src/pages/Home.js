@@ -6,6 +6,7 @@ import ChatUsers from "../components/ChatUsers";
 export default function Home() {
   // console.log(error);
   // console.log(data);
+  // console.log(window.location.host);
   return (
     <>
       <Container>
