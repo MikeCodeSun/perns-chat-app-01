@@ -20,7 +20,7 @@ export default function SendMessage({ selectedUser }) {
       console.log(err);
     },
     onCompleted(data) {
-      // console.log(data);
+      console.log({ data });
       // context.sendMessage(selectedUser.name, data.sendMessage);
       setContent("");
     },
@@ -31,18 +31,20 @@ export default function SendMessage({ selectedUser }) {
       console.log(err);
     },
     onSubscriptionData(data) {
-      // console.log(data.subscriptionData.data.newMessage);
+      console.log(data.subscriptionData.data.newMessage);
       const username =
         context.user.name === data.subscriptionData.data.newMessage.from
           ? data.subscriptionData.data.newMessage.to
           : data.subscriptionData.data.newMessage.from;
       // console.log(username);
+
       context.sendMessage(username, data.subscriptionData.data.newMessage);
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (content.trim() === "") return;
     sendMessage();
   };
 
@@ -53,7 +55,7 @@ export default function SendMessage({ selectedUser }) {
   // }
   // if (loading) return <p>loading ...</p>;
 
-  if (!loading && !error && data) console.log({ data });
+  // if (!loading && !error && data) console.log({ data });
 
   return (
     <div>

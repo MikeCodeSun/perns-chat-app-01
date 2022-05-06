@@ -37,3 +37,23 @@ a {
 .chat-messages::-webkit-scrollbar {
   display: none;
 }
+
+.reaction-icon:focus,
+.reaction-icon:hover,
+.reaction-icon:active {
+  box-shadow: none;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+// .reaction-icon {
+//   box-shadow: none;
+//   border: none;
+//   outline: none;
+//   text-decoration: none;
+// }
+
+.reaction-icon:hover {
+  transform: scale(1.5);
+}

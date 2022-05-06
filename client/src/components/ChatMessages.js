@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Col } from "react-bootstrap";
 import { useGlobleContext } from "../context/context";
 import { GET_MESSAGES } from "../graphql/gql";
+import Reactions from "./Reactions";
 import SendMessage from "./SendMessage";
 
 export default function ChatMessages() {
@@ -51,13 +52,20 @@ export default function ChatMessages() {
         <div className="">
           <div className="chat-messages d-flex flex-column-reverse">
             {selectedUser.messages.map((message) => {
+              // console.log(message);
               return (
                 <div
-                  className={classNames("text-white d-flex m-1 ", {
-                    "justify-content-end": message.from === user.name,
-                  })}
+                  className={classNames(
+                    "text-white d-flex m-1 align-items-center",
+                    {
+                      "justify-content-end ": message.from === user.name,
+                    }
+                  )}
                   key={message.uuid}
                 >
+                  {user.name === message.from && (
+                    <Reactions message={message} />
+                  )}
                   <div
                     className={classNames("rounded-pill bg-primary p-1", {
                       "bg-secondary": message.from !== user.name,
@@ -65,6 +73,7 @@ export default function ChatMessages() {
                   >
                     {message.content}
                   </div>
+                  {user.name === message.to && <Reactions message={message} />}
                 </div>
               );
             })}

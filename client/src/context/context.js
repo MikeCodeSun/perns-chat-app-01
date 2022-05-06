@@ -47,6 +47,12 @@ export const AppProvider = ({ children }) => {
   const sendMessage = (to, message) => {
     dispatch({ type: "SEND_MESSAGE", payload: { to, message } });
   };
+  const addReaction = (username, messageId, reaction) => {
+    dispatch({
+      type: "ADD_REACTION",
+      payload: { username, messageId, reaction },
+    });
+  };
   return (
     <AppContext.Provider
       value={{
@@ -57,6 +63,7 @@ export const AppProvider = ({ children }) => {
         setUserMessages,
         setUsers,
         sendMessage,
+        addReaction,
       }}
     >
       {children}

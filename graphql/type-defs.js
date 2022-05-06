@@ -15,6 +15,17 @@ module.exports = gql`
     from: String!
     to: String!
     createdAt: String!
+    reactions: [Reaction]
+  }
+
+  type Reaction {
+    uuid: String!
+    content: String!
+    messageId: String!
+    userId: String!
+    createdAt: String!
+    message: Message!
+    user: User!
   }
   type Query {
     getUsers: [User]!
@@ -35,14 +46,21 @@ module.exports = gql`
     to: String!
   }
 
+  input addReactionInput {
+    messageId: String!
+    content: String!
+  }
+
   type Mutation {
     register(input: registerInput!): User!
     login(input: loginInput!): User!
     sendMessage(input: sendMessageInput!): Message!
     getMessages(to: String!): [Message]!
+    addReaction(input: addReactionInput!): Reaction!
   }
 
   type Subscription {
     newMessage: Message!
+    newReaction: Reaction!
   }
 `;

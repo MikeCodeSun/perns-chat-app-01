@@ -47,6 +47,12 @@ export const GET_MESSAGES = gql`
       from
       to
       createdAt
+      reactions {
+        uuid
+        content
+        messageId
+        userId
+      }
     }
   }
 `;
@@ -59,6 +65,12 @@ export const SEND_MESSAGE = gql`
       to
       content
       createdAt
+      reactions {
+        uuid
+        content
+        messageId
+        userId
+      }
     }
   }
 `;
@@ -71,6 +83,41 @@ export const NEW_MESSAGE = gql`
       from
       to
       createdAt
+      reactions {
+        uuid
+        content
+        messageId
+        userId
+      }
+    }
+  }
+`;
+
+export const ADD_REACTION = gql`
+  mutation AddReaction($input: addReactionInput!) {
+    addReaction(input: $input) {
+      uuid
+      content
+    }
+  }
+`;
+
+export const NEW_REACTION = gql`
+  subscription NewReaction {
+    newReaction {
+      uuid
+      content
+      messageId
+      userId
+      createdAt
+      message {
+        uuid
+        from
+        to
+      }
+      user {
+        name
+      }
     }
   }
 `;

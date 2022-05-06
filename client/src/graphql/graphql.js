@@ -31,7 +31,7 @@ const wsLink = new GraphQLWsLink(
     url: "ws://localhost:8080/graphql",
     on: {
       connected: (socket) => {
-        console.log("connect client");
+        // console.log("connect client");
         console.log(socket);
       },
     },

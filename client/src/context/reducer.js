@@ -31,6 +31,7 @@ const reducer = (state, action) => {
     case "SET_USERS":
       return { ...state, users: action.payload };
     case "SEND_MESSAGE":
+      action.payload.message.reactions = [];
       msgUsers = state.users.map((user) => {
         if (user.name === action.payload.to) {
           return {
@@ -42,6 +43,31 @@ const reducer = (state, action) => {
         return user;
       });
       return { ...state, users: msgUsers };
+    case "ADD_REACTION":
+      const { username, messageId, reaction } = action.payload;
+      const userIndex = state.users.findIndex((user) => user.name === username);
+      const userMessageIndex = state.users[userIndex].messages.findIndex(
+        (message) => message.uuid === messageId
+      );
+      const reactionIndex = state.users[userIndex].messages[
+        userMessageIndex
+      ].reactions.findIndex((r) => r.uuid === reaction.uuid);
+
+      if (reactionIndex < 0) {
+        const userMessageReactions = [
+          ...state.users[userIndex].messages[userMessageIndex].reactions,
+          reaction,
+        ];
+        state.users[userIndex].messages[userMessageIndex].reactions =
+          userMessageReactions;
+        return { ...state };
+      } else {
+        state.users[userIndex].messages[userMessageIndex].reactions[
+          reactionIndex
+        ] = reaction;
+        return { ...state };
+      }
+
     default:
       throw new Error(`Error, unkown type`);
   }
